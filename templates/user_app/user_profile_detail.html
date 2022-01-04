@@ -1,0 +1,132 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+    <!-- Diplaying Django messages -->
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <strong>{{message}}</strong>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+
+
+    {% if profile %}
+
+    <div class="container">
+        <div class="main-body">
+        
+              <!-- Breadcrumb -->
+              <nav aria-label="breadcrumb" class="main-breadcrumb">
+
+              </nav>
+              <!-- /Breadcrumb -->
+              <br>
+              <div class="row gutters-sm">
+                <div class="col-md-4 mb-3">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex flex-column align-items-center text-center">
+                        <img src="{{ profile.profile_image.url }}" alt="Admin" class="rounded-circle" width="200" height="200" />  
+                        <div class="mt-3">
+                          <h4>{{profile.first_name}} {{profile.last_name}}</h4>
+                          <p class="text-muted font-size-sm">City: {{ profile.location }}</p>
+
+                          <!-- <button class="btn btn-primary">Follow</button> -->
+                          <!-- <button class="btn btn-outline-primary">Message</button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="col-md-8">
+                  <div class="card mb-3">
+                    <div class="card-body">
+ 
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Full Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ profile.first_name }} {{ profile.last_name }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Bio</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ profile.bio }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Total Posts</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ profile.post_set.all.count }}
+                        </div>
+                      </div>
+                      <hr>
+
+                    </div>
+                </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <hr>
+        <h3>{{ profile.first_name}}'s Posts</h3>
+        <br>
+        {% if profile.post_set.all %}
+        <div class="row g-5">
+            <div class="col-md-12">
+                <div class="row">
+                    {% for post in profile.post_set.all %}
+                    <div class="col-lg-4">
+                        <!-- Blog post-->
+                        <div class="card mb-4">
+                            <a href="{% url 'post-detail' post.id %}"><img class="card-img-top" src="{{post.post_image.url}}" width=300 height="150" alt="..." /></a>
+                            <div class="card-body">
+                                <div class="small text-muted">{{post.created.date}}</div>
+                                <h2 class="card-title h4">{{post.title}}</h2>
+                                <p class="card-text">{{post.body|slice:"100"}}...</p>
+                                <a class="btn btn-primary" href="{% url 'post-detail' post.id %}">Read more →</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+        
+        
+        
+        
+        {% else %}
+        
+        <p>Sorry post not found</p>
+            <a href="{% url 'index' %}">GO BACK</a>
+        
+        {% endif %}
+
+    {% else %}
+        <p><a href="{% url 'user-account-edit' %}">Create Profile First</a></p>
+    
+    {% endif %}
+
+
+
+
+{% endblock content %}

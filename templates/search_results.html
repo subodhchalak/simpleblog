@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+
+
+<br>
+
+<h1>Search Results For : {{query}}</h1>
+
+{% if search_objects %}
+    <br>
+    {% for object in search_objects %}
+        <ul>
+            <li><a href="{% url 'post-detail' object.id %}">{{object}}</a></li>
+        </ul>
+    {% endfor %}
+{% else %}
+<br>
+        <h3>Sorry, no results. Try searching something else..!</h3>
+{% endif %}
+
+{% endblock content %}

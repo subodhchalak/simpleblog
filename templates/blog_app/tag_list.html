@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <!-- Diplaying Django messages -->
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <strong>{{message}}</strong>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <hr>
+
+    {% if tag_list %}
+
+        {% for tag in tag_list %}
+            <ul>
+                <li><a href="{% url 'tag-detail' tag.id %}">{{tag.name}}</a></li>
+            </ul>
+        {% endfor %}
+    {% endif %}
+
+{% endblock content%}

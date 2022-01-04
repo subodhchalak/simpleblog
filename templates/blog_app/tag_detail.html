@@ -1,0 +1,58 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <!-- Diplaying Django messages -->
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <strong>{{message}}</strong>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <hr>
+
+    {% if tag %}
+
+    <div class="row g-5">
+        <div class="col-md-8">
+            <div class="row">
+                {% for post in tag.post_set.all %}
+                <div class="col-lg-6">
+                    <!-- Blog post-->
+                    <div class="card mb-4">
+                        <a href="{% url 'post-detail' post.id %}"><img class="card-img-top" src="{{post.post_image.url}}" width="700" height="200" alt="..." /></a>
+                        <div class="card-body">
+                          <div class="small text-muted">
+                            {% for tag in post.tags.all|slice:"0:3" %}
+                              <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'tag-detail' tag.id %}">{{tag.name}}</a>
+                            {% endfor %}
+                            &nbsp&nbsp{{post.created.date}}
+                          </div>
+                            <h2 class="card-title h4">{{post.title}}</h2>
+                            <a href="{% url 'user-profiles-detail' post.author.id %}"><h6>-- {{post.author}}</h6></a>
+                            <p class="card-text">{{post.body|slice:"150"}}...</p>
+                            <a class="btn btn-primary" href="{% url 'post-detail' post.id %}">Read more →</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+    
+    
+    
+    
+    {% else %}
+    
+    <p>Sorry post not found</p>
+        <a href="{% url 'index' %}">GO BACK</a>
+    
+    {% endif %}
+
+{% endblock content%}

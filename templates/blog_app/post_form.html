@@ -1,0 +1,59 @@
+{% extends 'main.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+    <!-- Diplaying Django messages -->
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <strong>{{message}}</strong>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <br>
+    {% if profile_instance == post_instance.author %}
+
+    {% if profile_instance.bio != '' %}
+        <div class="shadow p-4 mt-5 mb-5 bg-body rounded">
+            <div class="row">
+                <center><h1>Post Creation</h1></center>
+                <div class="col">
+                    
+                </div>
+                
+                <form method="POST", class="mt-2 col-6 align-middle" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <input type="submit" value="Submit" class="btn btn-primary mt-3">
+                    <a href="{% url 'user-account' %}">Cancel</a>
+                </form>
+
+                <div class="col">
+                </div>
+                
+            </div>
+        </div>
+    {% else %}
+        <br>
+        <h1>First Complete Your User Profile</h1>
+        <a href="{% url 'user-account-edit' %}"><button type="button" class="btn btn-primary mb-3">Create Profile</button></a>
+    {% endif %}
+    {% else %}
+        <h3>You are not authorized to perform this operation. <a href="{% url 'user-account'%}">Go Back</a></h3>
+    {% endif %}
+
+
+
+    <br>
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,71 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+
+
+{% block content %}
+
+
+    <!-- Diplaying Django messages -->
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <strong>{{message}}</strong>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <title>Recent Posts</title>
+    <br>
+    <h1>All Bloggers</h1>
+
+    <hr>
+    <br>
+    {% if profile_list %}
+
+            <link href="mystyles.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+
+            <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
+                <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
+                    {% for profile in profile_list %}
+                        {% if profile.first_name != '' %}
+                            <div class="col">
+                                <div class="card h-100 shadow-sm"> <img src="{{profile.profile_image.url}}" width="220" height="300" alt class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <div class="clearfix mb-3"> <span class="float-start badge rounded-pill bg-primary">Articles: {{profile.post_set.all.count}}</span></div>
+                                        <h5 class="card-title">{{profile.first_name}} {{profile.last_name}}</h5>
+                                        <h7 class="card-title">{{profile.bio}}</h7>
+                                        <div class="text-center my-4"> <a href="{% url 'user-profiles-detail' profile.id %}" class="btn btn-warning">Visit Profile</a> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            
+        
+
+    {% endif %}
+
+
+
+
+    </main>
+
+
+
+
+    </body>
+    </html>
+
+    <br>
+    <br>
+
+{% endblock content  %}

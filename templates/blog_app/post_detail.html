@@ -1,0 +1,121 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <!-- Diplaying Django messages -->
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <strong>{{message}}</strong>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    {% if post_instance %}
+
+
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+            <meta name="description" content="" />
+            <meta name="author" content="" />
+            <title>{{ post_instance.title }}</title>
+            <!-- Favicon-->
+            <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+            <!-- Core theme CSS (includes Bootstrap)-->
+            <link href="css/styles.css" rel="stylesheet" />
+        </head>
+        <body>
+            
+            <!-- Page content-->
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Post content-->
+                        <article>
+                            <!-- Post header-->
+                            <header class="mb-4">
+                                <!-- Post title-->
+                                <h1 class="fw-bolder mb-1">{{post_instance.title}}</h1>
+                                <!-- Post meta content-->
+                                <div class="text-muted fst-italic mb-2">Posted on {{post_instance.created.date}} by <a href="{% url 'user-profiles-detail' post_instance.author.id %}"> {{post_instance.author.name}}</a></div>
+                                <!-- Post categories-->
+                                {% for tag in post_instance.tags.all %}
+                                    <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'tag-detail' tag.id %}">{{tag.name}}</a>
+                                {% endfor %}
+                            </header>
+                            <!-- Preview image figure-->
+                            <figure class="mb-4"><img  src="{{post_instance.post_image.url}}" width="600" height="300" alt="..." /></figure>
+                            <!-- Post content-->
+                            <section class="mb-5">
+                                <p>{{post_instance.body|linebreaksbr}}</p>
+
+                            </section>
+                        </article>
+                        <!-- Comments section-->
+                        <h4>Post Comment</h4>
+                        <p>Note: Currently we do not offer comment delete functionality. So, please be careful.</p>
+                        <section class="mb-5">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <!-- Comment form-->
+                                            
+                                                        <form class="mb-4" method="POST" action="{% url 'post-detail' post_instance.id %}">
+                                                            {% csrf_token %}
+                                                            <!-- <textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea> -->
+                                                            {{form|crispy}}
+                                                            <button type="submit" class="btn btn-primary  btn-lg">Submit</button>                                   
+                                                        </form>
+                                            
+
+
+                                    <!-- Comment with nested comments-->
+                                    <br>
+
+                                        {% for comment in comments %}
+                                            <div class="d-flex mb-4">
+                                                <!-- Parent comment-->
+                                                <div class="flex-shrink-0"><img class="rounded-circle" src="{% static 'images/noprofile.png' %}" width="50" height="50"/></div>
+
+                                                <div class="ms-3">
+                                                    <div class="fw-bold">{{comment.name}} on <small>{{comment.created.date}}</small></div>
+                                                    {{comment.body|linebreaksbr}}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                </div>                                  
+
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                    
+                </div>
+            </div>
+            <!-- Footer-->
+            <footer class="py-5 bg-dark">
+                <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+            </footer>
+            <!-- Bootstrap core JS-->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Core theme JS-->
+            <script src="js/scripts.js"></script>
+        </body>
+    </html>
+
+    {% else %}
+        <p>Sorry post not found</p>
+        <a href="{% url 'index' %}">GO BACK</a>
+
+    {% endif %}
+
+
+{% endblock content %}

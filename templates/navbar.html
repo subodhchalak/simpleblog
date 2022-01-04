@@ -1,0 +1,61 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <div class="container-fluid">
+        <a href="{% url 'index' %}"><img src="{% static 'images/simple blog.png'%}" width="230" height="70"> </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-5 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'post-list' %}">Recent Posts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'user-profiles' %}">Bloggers</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'tag-list' %}">Categories</a>
+          </li>
+
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'post-create' %}">Create Post</a>
+            </li>
+          {% endif %}
+
+        </ul>
+        
+        <form class="d-flex" action="{% url 'search-results' %}" method="POST">
+          {% csrf_token %}
+          <input class="form-control me-2" name="query" type="text" placeholder="Blog Title/ Author/ Tag" aria-label="Search">
+          <button class="btn btn-success" type="submit">Search</button>
+          
+        </form>
+
+        
+
+
+    {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a href="{% url 'logout' %}"><button type="button" class="btn btn-primary mb-3">Logout</button></a>
+      </li>
+      {% if not user.is_staff %}
+        <li class="nav-item">
+          <a href="{% url 'user-account' %}"><button type="button" class="btn btn-info   mb-3">{{user.username}}</button></a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a href="{% url 'user-account' %}"><button type="button" class="btn btn-info   mb-3">Admin</button></a>
+        </li>
+      {% endif %}
+    {% else %}
+        <li class="nav-item">
+            <a href="{% url 'login' %}"><button type="button" class="btn btn-primary mb-3">Login/Register</button></a>
+        </li>
+    {% endif %}
+
+  </nav>

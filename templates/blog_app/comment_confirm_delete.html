@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+    <!-- Diplaying Django messages -->
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <strong>{{message}}</strong>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+
+    {% if comment_instance.commenter == user.profile %}
+    <br>
+        <h1>Delete Comment</h1>
+        <br>
+        <h4>Do you really want to delete this comment?</h4>
+        <br>
+        
+        <p>{{ comment_instance }}</p>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete">
+            <a href="{% url 'user-account' %}">Cancel</a>
+        </form>
+    {% else %}
+    <br>
+        <h3>You are not authorized to perform this operation. <a href="{% url 'index' %}">Go Back</a></h3>
+
+    {% endif %}
+
+{% endblock content %}

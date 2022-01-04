@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+    <!-- Diplaying Django messages -->
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <strong>{{message}}</strong>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+
+    <form action="" method="post"  class="mt-2 mb-5 col-6 align-middle">
+        <h1 align="center">User Registration</h1>
+        <hr>
+
+        {% csrf_token %}
+
+        <table>
+            {{ form | crispy}}
+        </table>
+
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+
+    <p>Already have a account? <a href="{% url 'login' %}" >Login</a></p>
+
+
+{% endblock content %}

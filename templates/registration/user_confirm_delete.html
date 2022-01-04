@@ -1,0 +1,35 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+    <!-- Diplaying Django messages -->
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <strong>{{message}}</strong>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+    
+    {% if user.is_authenticated %}
+        <h1>Delete Account</h1>
+
+        <h5>Do you really want to delete your account?: {{ user.profile }}</h5>
+        <h5>Once deleted, your account can't be retrieved.</h5>
+        <br>
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete">
+            <a href="{% url 'user-account' %}">Cancel</a>
+           
+        </form>
+    {% else %}
+        <p>You are not authorized to perform this operation</p>
+        <p><a href="{% url 'index' %}">GO Back</a></p>
+    {% endif %}
+
+{% endblock content %}

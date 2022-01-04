@@ -1,0 +1,179 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+    <!-- Diplaying Django messages -->
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <strong>{{message}}</strong>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+
+
+    {% if profile_instance %}
+
+    <div class="container">
+        <div class="main-body">
+        
+              <!-- Breadcrumb -->
+              <nav aria-label="breadcrumb" class="main-breadcrumb">
+
+              </nav>
+              <!-- /Breadcrumb -->
+              <br>
+              <div class="row gutters-sm">
+                <div class="col-md-4 mb-3">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex flex-column align-items-center text-center">
+                        <img src="{{ profile_instance.profile_image.url }}" alt="Admin" class="rounded-circle" width="200" height="200" />  
+                        <div class="mt-3">
+                          <h4>{{profile_instance.first_name}} {{profile_instance.last_name}}</h4>
+                          <p class="text-muted font-size-sm">City: {{ profile_instance.location }}</p>
+                          <p class="text-muted font-size-sm">Joined On: {{ profile_instance.created.date }}</p>
+                          <p class="text-muted font-size-sm">Last Updated : {{ profile_instance.updated }}</p>
+                          <!-- <button class="btn btn-primary">Follow</button> -->
+                          <!-- <button class="btn btn-outline-primary">Message</button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="col-md-8">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                              <h6 class="mb-0">Username</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                              {{ profile_instance.user }}
+                            </div>
+                          </div>
+                          <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Full Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ profile_instance.first_name }} {{ profile_instance.last_name }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Email</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ profile_instance.email }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Bio</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ profile_instance.bio }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Total Posts</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          {{ profile_instance.post_set.all.count }}
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <a class="btn btn-info "  href="{% url 'user-account-edit' %}">Create/Edit Profile</a>
+                          <a class="btn btn-info "  href="{% url 'user-username-edit' %}">Edit Username</a>
+                          <a class="btn btn-danger "  href="{% url 'user-confirm-delete' %}">Delete Account</a>
+                        </div>
+                      </div>
+                      <hr>
+                      {% if user.is_staff %}
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <a class="btn btn-info "  href="{% url 'tag-create' %}">Add Tag</a>
+                          </div>
+                        </div>
+                        <hr>
+                      {% endif %}
+                      
+                        <div class="row">
+                          <div class="col-sm-12">
+                            {% if profile_instance.city != '' %}
+                              <a class="btn btn-success "  href="{% url 'post-create' %}">Create Post</a>
+                             
+                            {% else %}
+                            <a class="btn btn-success "  href="{% url 'user-account-edit' %}">First Complete Profile to Create Post</a>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <hr>
+        <h3>{{ profile_instance.first_name}}'s Posts</h3>
+        <br>
+        {% if profile_instance.post_set.all %}
+        <div class="row g-3">
+            <div class="col-md-8">
+                <div class="row">
+                    {% for post in profile_instance.post_set.all %}
+                    <div class="col-lg-6">
+                        <!-- Blog post-->
+                        <div class="card mb-4">
+                            <a href="{% url 'post-detail' post.id %}"><img class="card-img-top" src="{{post.post_image.url}}" width=300 height="150" alt="..." /></a>
+                            <div class="card-body">
+                                <div class="small text-muted">{{post.created.date}}</div>
+                                <h2 class="card-title h4">{{post.title}}</h2>
+                                <p class="card-text">{{post.body|slice:"100"}}...</p>
+                                <a class="btn btn-primary" href="{% url 'post-detail' post.id %}">Read more </a>
+                                <a class="btn btn-warning" href="{% url 'post-update' post.id %}">Update Post </a>
+                                <a class="btn btn-warning" href="{% url 'post-delete' post.id %}">Delete Post </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+        
+        
+        
+        
+        {% else %}
+        
+        <p>Sorry post not found</p>
+            <a href="{% url 'index' %}">GO BACK</a>
+        
+        {% endif %}
+
+    {% else %}
+        <p><a href="{% url 'user-account-edit' %}">Create Profile First</a></p>
+    
+    {% endif %}
+
+
+
+
+{% endblock content %}
