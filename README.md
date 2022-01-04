@@ -7,7 +7,9 @@ Index Page
 ![147507074-a3440016-ce55-45d1-b407-9e966874812f](https://user-images.githubusercontent.com/95316372/148115252-9ae4b806-1469-48f6-8b80-4c7a6e7dc435.png)
 
 
+
 This contains the list of bloggers, and their blogs
+
 
 ![147507977-bd6e97d8-9f21-4953-9e0f-d6633174fb69](https://user-images.githubusercontent.com/95316372/148115319-6050a121-e200-4129-8317-27489682e9c7.png)
 
